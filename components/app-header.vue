@@ -46,7 +46,7 @@ const items = [
     icon: 'i-heroicons-arrow-left-on-rectangle',
     onClick: () => {
       supabase.auth.signOut()
-      return navigateTo('/signin')
+      return navigateTo('/login')
     }
   }]
 ]

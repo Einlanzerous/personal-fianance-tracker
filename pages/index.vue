@@ -10,7 +10,8 @@
 
   <section class="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-4 sm:gap-16 mb-10">
     <Trend color="green" title="Income" :amount="incomeTotal" :last-amount="previousIncomeTotal" :loading="isPending" />
-    <Trend color="red" title="Expenses" :amount="expensesTotal" :last-amount="previousExpensesTotal" :loading="isPending" />
+    <Trend color="red" title="Expenses" :amount="expensesTotal" :last-amount="previousExpensesTotal"
+      :loading="isPending" />
     <Trend color="green" title="Investments" :amount="64300" :last-amount="57884" :loading="isPending" />
     <Trend color="red" title="Savings" :amount="447" :last-amount="0" :loading="isPending" />
   </section>
@@ -34,7 +35,7 @@
     <div v-for="(transactionsByDate, date) in byDate" :key="date" class="mb-10">
       <DailyTransactionSummary :date="date" :transactions="transactionsByDate" />
       <Transaction v-for="transaction in transactionsByDate" :key="transaction.id" :transaction="transaction"
-        @deleted="refresh" />
+        @deleted="refresh()" @updated="refresh()" />
     </div>
   </section>
   <section v-else>

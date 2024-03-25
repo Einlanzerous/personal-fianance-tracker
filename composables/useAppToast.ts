@@ -7,7 +7,7 @@ export const useAppToast = () => {
       description = '',
     }: {
       title: string;
-      description: string;
+      description?: string;
     }) => {
       toast.add({
         title,
@@ -21,7 +21,7 @@ export const useAppToast = () => {
       description = '',
     }: {
       title: string;
-      description: string;
+      description?: string;
     }) => {
       toast.add({
         title,

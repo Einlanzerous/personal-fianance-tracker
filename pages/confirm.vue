@@ -1,8 +1,6 @@
 <template>
   <UCard>
-    <template #header>
-      Signing in...
-    </template>
+    <template #header> Signing in... </template>
 
     Please wait a moment while you are signed in...
   </UCard>

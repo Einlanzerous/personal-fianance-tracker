@@ -1,41 +1,81 @@
 <template>
   <section class="flex items-center justify-between mb-10">
-    <h1 class="text-4xl font-extrabold">
-      Summary
-    </h1>
+    <h1 class="text-4xl font-extrabold">Summary</h1>
     <div>
       <USelectMenu :options="transactionViewOptions" v-model="selectedView" />
     </div>
   </section>
 
-  <section class="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-4 sm:gap-16 mb-10">
-    <Trend color="green" title="Income" :amount="incomeTotal" :last-amount="previousIncomeTotal" :loading="isPending" />
-    <Trend color="red" title="Expenses" :amount="expensesTotal" :last-amount="previousExpensesTotal"
-      :loading="isPending" />
-    <Trend color="green" title="Investments" :amount="64300" :last-amount="57884" :loading="isPending" />
-    <Trend color="red" title="Savings" :amount="447" :last-amount="0" :loading="isPending" />
+  <section
+    class="grid grid-cols-1 sm:grid-col-2 lg:grid-cols-4 sm:gap-16 mb-10"
+  >
+    <Trend
+      color="green"
+      title="Income"
+      :amount="incomeTotal"
+      :last-amount="previousIncomeTotal"
+      :loading="isPending"
+    />
+    <Trend
+      color="red"
+      title="Expenses"
+      :amount="expensesTotal"
+      :last-amount="previousExpensesTotal"
+      :loading="isPending"
+    />
+    <Trend
+      color="green"
+      title="Investments"
+      :amount="64300"
+      :last-amount="57884"
+      :loading="isPending"
+    />
+    <Trend
+      color="red"
+      title="Savings"
+      :amount="447"
+      :last-amount="0"
+      :loading="isPending"
+    />
   </section>
 
   <section class="flex justify-between mb-10">
     <div>
-      <h2 class="text-2xl font-extrabold">
-        Transactions
-      </h2>
+      <h2 class="text-2xl font-extrabold">Transactions</h2>
       <div class="text-gray-500 dark:text-gray-400">
-        You have {{ incomeCount }} income sources and {{ expensesCount }} expenses this period.
+        You have {{ incomeCount }} income sources and
+        {{ expensesCount }} expenses this period.
       </div>
     </div>
     <div>
-      <TransactionModal v-model="isOpen" :transactions="transactions" @saved="refresh" />
-      <UButton icon="i-heroicons-plus-circle" color="white" variant="solid" label="Add" @click="isOpen = true" />
+      <TransactionModal
+        v-model="isOpen"
+        :transactions="transactions"
+        @saved="refresh"
+      />
+      <UButton
+        icon="i-heroicons-plus-circle"
+        color="white"
+        variant="solid"
+        label="Add"
+        @click="isOpen = true"
+      />
     </div>
   </section>
 
   <section v-if="!isPending">
     <div v-for="(transactionsByDate, date) in byDate" :key="date" class="mb-10">
-      <DailyTransactionSummary :date="date" :transactions="transactionsByDate" />
-      <Transaction v-for="transaction in transactionsByDate" :key="transaction.id" :transaction="transaction"
-        @deleted="refresh()" @updated="refresh()" />
+      <DailyTransactionSummary
+        :date="date"
+        :transactions="transactionsByDate"
+      />
+      <Transaction
+        v-for="transaction in transactionsByDate"
+        :key="transaction.id"
+        :transaction="transaction"
+        @deleted="refresh()"
+        @updated="refresh()"
+      />
     </div>
   </section>
   <section v-else>
@@ -44,11 +84,13 @@
 </template>
 
 <script setup lang="ts">
-import { transactionViewOptions } from '~/constants';
+import { transactionViewOptions } from "~/constants";
 
 const user = useSupabaseUser();
 const isOpen = ref(false);
-const selectedView = ref(user.value?.user_metadata?.transaction_view ?? transactionViewOptions[2]);
+const selectedView = ref(
+  user.value?.user_metadata?.transaction_view ?? transactionViewOptions[2],
+);
 const { current, previous } = useSelectedTimePeriod(selectedView);
 
 defineComponent({
@@ -58,23 +100,28 @@ defineComponent({
       required: true,
     },
   },
-  emits: ['saved', 'deleted'],
+  emits: ["saved", "deleted"],
 });
 
-const { isPending, refresh, transactions: {
-  incomeCount,
-  expensesCount,
-  incomeTotal,
-  expensesTotal,
-  grouped: {
-    byDate
-  }
-}} = useFetchTransactions(current);
+const {
+  isPending,
+  refresh,
+  transactions: {
+    incomeCount,
+    expensesCount,
+    incomeTotal,
+    expensesTotal,
+    grouped: { byDate },
+  },
+} = useFetchTransactions(current);
 
 await refresh();
 
-const { refresh: refreshPrevious, transactions: {
-  incomeTotal: previousIncomeTotal,
-  expensesTotal: previousExpensesTotal,
-}} = useFetchTransactions(previous);
+const {
+  refresh: refreshPrevious,
+  transactions: {
+    incomeTotal: previousIncomeTotal,
+    expensesTotal: previousExpensesTotal,
+  },
+} = useFetchTransactions(previous);
 </script>

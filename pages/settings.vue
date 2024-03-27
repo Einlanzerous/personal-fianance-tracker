@@ -10,16 +10,16 @@
 <script setup lang="ts">
 const links = [
   {
-    labels: 'Profile',
-    to: '/settings/profile'
+    labels: "Profile",
+    to: "/settings/profile",
   },
   {
-    label: 'Avatar',
-    to: '/settings/avatar'
+    label: "Avatar",
+    to: "/settings/avatar",
   },
   {
-    label: 'Settings',
-    to: '/settings/settings'
-  }
+    label: "Settings",
+    to: "/settings/settings",
+  },
 ];
 </script>

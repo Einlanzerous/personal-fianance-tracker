@@ -71,12 +71,10 @@ const { isPending, refresh, transactions: {
   }
 }} = useFetchTransactions(current);
 
-// await refresh();
+await refresh();
 
 const { refresh: refreshPrevious, transactions: {
   incomeTotal: previousIncomeTotal,
   expensesTotal: previousExpensesTotal,
 }} = useFetchTransactions(previous);
-
-// await refreshPrevious();
 </script>

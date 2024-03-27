@@ -7,65 +7,27 @@
 
       <UForm :state="state" :schema="schema" @submit.prevent="save">
         <UFormGroup label="Type" :required="true" name="type" class="mb-4">
-          <USelect
-            :disabled="isEditing"
-            placeholder="Select the transaction type"
-            :options="transactionTypes"
-            v-model="state.type"
-          />
+          <USelect :disabled="isEditing" placeholder="Select the transaction type" :options="transactionTypes"
+            v-model="state.type" />
         </UFormGroup>
 
         <UFormGroup label="Amount" :required="true" name="amount" class="mb-4">
-          <UInput
-            type="number"
-            placeholder="Enter transaction amount"
-            v-model.number="state.amount"
-          />
+          <UInput type="number" placeholder="Enter transaction amount" v-model.number="state.amount" />
         </UFormGroup>
 
-        <UFormGroup
-          label="Date"
-          :required="true"
-          name="created_at"
-          class="mb-4"
-        >
-          <UInput
-            type="date"
-            icon="i-heroicons-calendar-days-20-solid"
-            v-model="state.created_at"
-          />
+        <UFormGroup label="Date" :required="true" name="created_at" class="mb-4">
+          <UInput type="date" icon="i-heroicons-calendar-days-20-solid" v-model="state.created_at" />
         </UFormGroup>
 
-        <UFormGroup
-          label="Description"
-          hint="Optional"
-          name="description"
-          class="mb-4"
-        >
+        <UFormGroup label="Description" hint="Optional" name="description" class="mb-4">
           <UInput placeholder="Description" v-model="state.description" />
         </UFormGroup>
 
-        <UFormGroup
-          label="Category"
-          :required="true"
-          name="category"
-          class="mb-4"
-          v-if="state.type === 'Expense'"
-        >
-          <USelect
-            placeholder="Category"
-            :options="categories"
-            v-model="state.category"
-          />
+        <UFormGroup label="Category" :required="true" name="category" class="mb-4" v-if="state.type === 'Expense'">
+          <USelect placeholder="Category" :options="categories" v-model="state.category" />
         </UFormGroup>
 
-        <UButton
-          type="submit"
-          color="black"
-          variant="solid"
-          label="Save"
-          :loading="isLoading"
-        />
+        <UButton type="submit" color="black" variant="solid" label="Save" :loading="isLoading" />
       </UForm>
     </UCard>
   </UModal>
@@ -154,25 +116,25 @@ const save = async () => {
   }
 };
 
-const initialState = {
-  type: undefined,
-  amount: 0,
-  created_at: undefined,
-  description: undefined,
-  category: undefined,
-};
+const initialState = isEditing.value ?
+  {
+    type: props.transaction?.type,
+    amount: props.transaction?.amount,
+    created_at: props.transaction?.created_at.split('T')[0],
+    description: props.transaction?.description,
+    category: props.transaction?.category,
+  } : {
+    type: undefined,
+    amount: 0,
+    created_at: undefined,
+    description: undefined,
+    category: undefined,
+  };
+
 const state = ref(
-  isEditing.value
-    ? {
-        type: props.transaction?.type,
-        amount: props.transaction?.amount,
-        created_at: props.transaction?.created_at.split('T')[0],
-        description: props.transaction?.description,
-        category: props.transaction?.category,
-      }
-    : {
-        ...initialState,
-      }
+  {
+    ...initialState,
+  }
 );
 const resetForm = () => {
   Object.assign(state.value, initialState);
